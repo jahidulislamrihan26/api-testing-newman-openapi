@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Restful-Booker API Tests" tests="46" time="12.448">
+  <testsuite name="01 Health &amp; Authentication / HLTH-01 Health check responds" id="8acd568a-0915-4323-94c8-965e3a941881" timestamp="2026-11-04T19:19:32.821Z" tests="3" failures="0" errors="0" time="0.904">
+    <testcase name="Status code is 201" time="0.904" classname="01HealthAmpAuthenticationHlth01HealthCheckResponds"/>
+    <testcase name="Response time under 3000 ms" time="0.904" classname="01HealthAmpAuthenticationHlth01HealthCheckResponds"/>
+    <testcase name="Body text is Created" time="0.904" classname="01HealthAmpAuthenticationHlth01HealthCheckResponds"/>
+  </testsuite>
+  <testsuite name="01 Health &amp; Authentication / AUTH-01 Login with valid admin credentials returns a token" id="4a3ac26f-a66f-4f8c-96df-a4a13592a276" timestamp="2026-11-04T19:19:32.821Z" tests="4" failures="0" errors="0" time="0.249">
+    <testcase name="Status code is 200" time="0.249" classname="01HealthAmpAuthenticationAuth01LoginWithValidAdminCredentialsReturnsAToken"/>
+    <testcase name="Content-Type is application/json" time="0.249" classname="01HealthAmpAuthenticationAuth01LoginWithValidAdminCredentialsReturnsAToken"/>
+    <testcase name="Response matches token schema" time="0.249" classname="01HealthAmpAuthenticationAuth01LoginWithValidAdminCredentialsReturnsAToken"/>
+    <testcase name="Response time under 3000 ms" time="0.249" classname="01HealthAmpAuthenticationAuth01LoginWithValidAdminCredentialsReturnsAToken"/>
+  </testsuite>
+  <testsuite name="01 Health &amp; Authentication / AUTH-02 Login with wrong password is rejected" id="d4c18ea7-e76f-4473-8cdf-136e98372677" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="1" errors="0" time="0.245">
+    <testcase name="No token is issued" time="0.245" classname="01HealthAmpAuthenticationAuth02LoginWithWrongPasswordIsRejected"/>
+    <testcase name="KNOWN-BUG API-BUG-001: status should be 401 for bad credentials" time="0.245" classname="01HealthAmpAuthenticationAuth02LoginWithWrongPasswordIsRejected">
+      <failure type="AssertionFailure" message="expected 200 to deeply equal 401">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 01 Health & Authentication / AUTH-02 Login with wrong password is rejected.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-001: status should be 401 for bad credentials.]]>
+        <![CDATA[Error message: expected 200 to deeply equal 401.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 200 to deeply equal 401
+   at Object.eval sandbox-script.js:2:3).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="01 Health &amp; Authentication / AUTH-03 Login with empty body is rejected" id="f650ec46-c043-4685-b7c1-506fd2c4aa5a" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="1" errors="0" time="0.251">
+    <testcase name="No token is issued" time="0.251" classname="01HealthAmpAuthenticationAuth03LoginWithEmptyBodyIsRejected"/>
+    <testcase name="KNOWN-BUG API-BUG-001: status should be 400 or 401 for empty body" time="0.251" classname="01HealthAmpAuthenticationAuth03LoginWithEmptyBodyIsRejected">
+      <failure type="AssertionFailure" message="expected 200 to be one of [ 400, 401 ]">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 01 Health & Authentication / AUTH-03 Login with empty body is rejected.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-001: status should be 400 or 401 for empty body.]]>
+        <![CDATA[Error message: expected 200 to be one of [ 400, 401 ].]]>
+        <![CDATA[Stacktrace: AssertionError: expected 200 to be one of [ 400, 401 ]
+   at Object.eval sandbox-script.js:2:4).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="01 Health &amp; Authentication / AUTH-04 Login with unknown user is rejected" id="8fb8cb47-a128-49b2-a720-4e190982d4c9" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="1" errors="0" time="0.244">
+    <testcase name="No token is issued" time="0.244" classname="01HealthAmpAuthenticationAuth04LoginWithUnknownUserIsRejected"/>
+    <testcase name="KNOWN-BUG API-BUG-001: status should be 401 for unknown user" time="0.244" classname="01HealthAmpAuthenticationAuth04LoginWithUnknownUserIsRejected">
+      <failure type="AssertionFailure" message="expected 200 to deeply equal 401">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 01 Health & Authentication / AUTH-04 Login with unknown user is rejected.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-001: status should be 401 for unknown user.]]>
+        <![CDATA[Error message: expected 200 to deeply equal 401.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 200 to deeply equal 401
+   at Object.eval sandbox-script.js:2:5).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="01 Health &amp; Authentication / AUTH-05 SQL injection in username does not authenticate or crash" id="91f4795c-eeb8-4f75-8fdf-016674f99f9f" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="0" errors="0" time="0.242">
+    <testcase name="No token is issued" time="0.242" classname="01HealthAmpAuthenticationAuth05SqlInjectionInUsernameDoesNotAuthenticateOrCrash"/>
+    <testcase name="Server did not error (no 5xx)" time="0.242" classname="01HealthAmpAuthenticationAuth05SqlInjectionInUsernameDoesNotAuthenticateOrCrash"/>
+  </testsuite>
+  <testsuite name="02 Create booking / CRT-01 Create a booking with valid data" id="7840dc70-f25c-47c0-93b3-2045180040f6" timestamp="2026-11-04T19:19:32.821Z" tests="5" failures="0" errors="0" time="0.245">
+    <testcase name="Status code is 200" time="0.245" classname="02CreateBookingCrt01CreateABookingWithValidData"/>
+    <testcase name="Content-Type is application/json" time="0.245" classname="02CreateBookingCrt01CreateABookingWithValidData"/>
+    <testcase name="Response matches created-booking schema" time="0.245" classname="02CreateBookingCrt01CreateABookingWithValidData"/>
+    <testcase name="Response time under 3000 ms" time="0.245" classname="02CreateBookingCrt01CreateABookingWithValidData"/>
+    <testcase name="Echoes the submitted booking" time="0.245" classname="02CreateBookingCrt01CreateABookingWithValidData"/>
+  </testsuite>
+  <testsuite name="02 Create booking / CRT-02 Create a booking without the optional additionalneeds field" id="b7f0cbf6-4f15-4fc2-b60d-91f6df38cd0b" timestamp="2026-11-04T19:19:32.821Z" tests="3" failures="0" errors="0" time="0.242">
+    <testcase name="Status code is 200" time="0.242" classname="02CreateBookingCrt02CreateABookingWithoutTheOptionalAdditionalneedsField"/>
+    <testcase name="Content-Type is application/json" time="0.242" classname="02CreateBookingCrt02CreateABookingWithoutTheOptionalAdditionalneedsField"/>
+    <testcase name="Booking id returned" time="0.242" classname="02CreateBookingCrt02CreateABookingWithoutTheOptionalAdditionalneedsField"/>
+  </testsuite>
+  <testsuite name="02 Create booking / CRT-03 Two creates return different booking ids" id="81298f8f-f7b1-47a6-b08f-713a40aeb561" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="0" errors="0" time="0.243">
+    <testcase name="Status code is 200" time="0.243" classname="02CreateBookingCrt03TwoCreatesReturnDifferentBookingIds"/>
+    <testcase name="Id differs from the first booking" time="0.243" classname="02CreateBookingCrt03TwoCreatesReturnDifferentBookingIds"/>
+  </testsuite>
+  <testsuite name="02 Create booking / CRT-04 Malformed JSON is rejected with 400" id="5ebc6128-0705-4653-b099-e82550002d4d" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="0" errors="0" time="0.245">
+    <testcase name="Status code is 400" time="0.245" classname="02CreateBookingCrt04MalformedJsonIsRejectedWith400"/>
+    <testcase name="Response time under 3000 ms" time="0.245" classname="02CreateBookingCrt04MalformedJsonIsRejectedWith400"/>
+  </testsuite>
+  <testsuite name="02 Create booking / CRT-05 Missing required fields are rejected with a client error" id="87113eaf-72df-446c-a420-7ebe11fdd6ab" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="1" errors="0" time="0.239">
+    <testcase name="KNOWN-BUG API-BUG-002: should be 400/422, not a 5xx server error" time="0.239" classname="02CreateBookingCrt05MissingRequiredFieldsAreRejectedWithAClientError">
+      <failure type="AssertionFailure" message="expected 500 to be within 400..499">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 02 Create booking / CRT-05 Missing required fields are rejected with a client error.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-002: should be 400/422, not a 5xx server error.]]>
+        <![CDATA[Error message: expected 500 to be within 400..499.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 500 to be within 400..499
+   at Object.eval sandbox-script.js:1:11).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="02 Create booking / CRT-06 Empty object is rejected with a client error" id="7a1f1ca9-4b4e-4b27-84ba-79c3450c1e12" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="1" errors="0" time="0.241">
+    <testcase name="KNOWN-BUG API-BUG-002: should be 400/422, not a 5xx server error" time="0.241" classname="02CreateBookingCrt06EmptyObjectIsRejectedWithAClientError">
+      <failure type="AssertionFailure" message="expected 500 to be within 400..499">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 02 Create booking / CRT-06 Empty object is rejected with a client error.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-002: should be 400/422, not a 5xx server error.]]>
+        <![CDATA[Error message: expected 500 to be within 400..499.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 500 to be within 400..499
+   at Object.eval sandbox-script.js:1:12).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="02 Create booking / CRT-07 Negative total price is rejected" id="f1ffa399-2a1b-4e6d-8109-9b34e1e389c9" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="1" errors="0" time="0.245">
+    <testcase name="KNOWN-BUG API-BUG-004: negative price should be rejected with 400" time="0.245" classname="02CreateBookingCrt07NegativeTotalPriceIsRejected">
+      <failure type="AssertionFailure" message="expected 200 to be within 400..499">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 02 Create booking / CRT-07 Negative total price is rejected.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-004: negative price should be rejected with 400.]]>
+        <![CDATA[Error message: expected 200 to be within 400..499.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 200 to be within 400..499
+   at Object.eval sandbox-script.js:1:13).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="02 Create booking / CRT-08 Non-numeric total price is rejected" id="5caf1e07-ee26-4e8a-8e4e-8eb6f198c248" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="1" errors="0" time="0.238">
+    <testcase name="KNOWN-BUG API-BUG-004: string price should be rejected with 400, not stored as null" time="0.238" classname="02CreateBookingCrt08NonNumericTotalPriceIsRejected">
+      <failure type="AssertionFailure" message="expected 200 to be within 400..499">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 02 Create booking / CRT-08 Non-numeric total price is rejected.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-004: string price should be rejected with 400, not stored as null.]]>
+        <![CDATA[Error message: expected 200 to be within 400..499.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 200 to be within 400..499
+   at Object.eval sandbox-script.js:1:14).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="02 Create booking / CRT-09 Checkout date before checkin date is rejected" id="72467102-9b04-447b-af51-0e8664bfb4eb" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="1" errors="0" time="0.240">
+    <testcase name="KNOWN-BUG API-BUG-004: checkout before checkin should be rejected with 400" time="0.240" classname="02CreateBookingCrt09CheckoutDateBeforeCheckinDateIsRejected">
+      <failure type="AssertionFailure" message="expected 200 to be within 400..499">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 02 Create booking / CRT-09 Checkout date before checkin date is rejected.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-004: checkout before checkin should be rejected with 400.]]>
+        <![CDATA[Error message: expected 200 to be within 400..499.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 200 to be within 400..499
+   at Object.eval sandbox-script.js:1:15).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="02 Create booking / CRT-10 10,000-character first name is rejected" id="47d77d13-235b-4600-a00d-9999f2773374" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="1" errors="0" time="0.253">
+    <testcase name="KNOWN-BUG API-BUG-004: oversized value should be rejected with 400/413" time="0.253" classname="02CreateBookingCrt1010000CharacterFirstNameIsRejected">
+      <failure type="AssertionFailure" message="expected 200 to be within 400..499">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 02 Create booking / CRT-10 10,000-character first name is rejected.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-004: oversized value should be rejected with 400/413.]]>
+        <![CDATA[Error message: expected 200 to be within 400..499.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 200 to be within 400..499
+   at Object.eval sandbox-script.js:1:16).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="03 Read booking / RD-01 List all bookings" id="880ce52f-d9f5-4050-ab90-005bf60b28a4" timestamp="2026-11-04T19:19:32.821Z" tests="5" failures="0" errors="0" time="0.488">
+    <testcase name="Status code is 200" time="0.488" classname="03ReadBookingRd01ListAllBookings"/>
+    <testcase name="Content-Type is application/json" time="0.488" classname="03ReadBookingRd01ListAllBookings"/>
+    <testcase name="Response matches booking-id list schema" time="0.488" classname="03ReadBookingRd01ListAllBookings"/>
+    <testcase name="Response time under 3000 ms" time="0.488" classname="03ReadBookingRd01ListAllBookings"/>
+    <testcase name="List is not empty" time="0.488" classname="03ReadBookingRd01ListAllBookings"/>
+  </testsuite>
+  <testsuite name="03 Read booking / RD-02 Filter by lastname finds the new booking" id="f0514d48-0be6-4649-b809-4504247307a3" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="0" errors="0" time="0.239">
+    <testcase name="Status code is 200" time="0.239" classname="03ReadBookingRd02FilterByLastnameFindsTheNewBooking"/>
+    <testcase name="Result contains the booking created in CRT-01" time="0.239" classname="03ReadBookingRd02FilterByLastnameFindsTheNewBooking"/>
+  </testsuite>
+  <testsuite name="03 Read booking / RD-03 Filter by firstname and lastname together" id="d88fd17f-cda9-4c68-9134-17fe32c8df94" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="0" errors="0" time="0.241">
+    <testcase name="Status code is 200" time="0.241" classname="03ReadBookingRd03FilterByFirstnameAndLastnameTogether"/>
+    <testcase name="Result contains the new booking" time="0.241" classname="03ReadBookingRd03FilterByFirstnameAndLastnameTogether"/>
+  </testsuite>
+  <testsuite name="03 Read booking / RD-04 Filter with no match returns an empty list" id="8a349402-dd0e-4cfa-93a9-ec66cec629fa" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="0" errors="0" time="0.245">
+    <testcase name="Status code is 200" time="0.245" classname="03ReadBookingRd04FilterWithNoMatchReturnsAnEmptyList"/>
+    <testcase name="Body is an empty array" time="0.245" classname="03ReadBookingRd04FilterWithNoMatchReturnsAnEmptyList"/>
+  </testsuite>
+  <testsuite name="03 Read booking / RD-05 Get booking by id returns the stored booking" id="0db4d211-a1d3-4d4c-8ecc-6eaa2d83440f" timestamp="2026-11-04T19:19:32.821Z" tests="5" failures="0" errors="0" time="0.243">
+    <testcase name="Status code is 200" time="0.243" classname="03ReadBookingRd05GetBookingByIdReturnsTheStoredBooking"/>
+    <testcase name="Content-Type is application/json" time="0.243" classname="03ReadBookingRd05GetBookingByIdReturnsTheStoredBooking"/>
+    <testcase name="Response matches booking schema" time="0.243" classname="03ReadBookingRd05GetBookingByIdReturnsTheStoredBooking"/>
+    <testcase name="Response time under 3000 ms" time="0.243" classname="03ReadBookingRd05GetBookingByIdReturnsTheStoredBooking"/>
+    <testcase name="Matches what was created" time="0.243" classname="03ReadBookingRd05GetBookingByIdReturnsTheStoredBooking"/>
+  </testsuite>
+  <testsuite name="03 Read booking / RD-06 Get a non-existent booking returns 404" id="cb59883b-aceb-4669-a7a5-6a614883c420" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="0" errors="0" time="0.249">
+    <testcase name="Status code is 404" time="0.249" classname="03ReadBookingRd06GetANonExistentBookingReturns404"/>
+    <testcase name="Response time under 3000 ms" time="0.249" classname="03ReadBookingRd06GetANonExistentBookingReturns404"/>
+  </testsuite>
+  <testsuite name="03 Read booking / RD-07 Get a non-numeric id returns 404" id="8c085638-72e7-4af8-b8d5-acbf55c92a6f" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="0" errors="0" time="0.243">
+    <testcase name="Status code is 404" time="0.243" classname="03ReadBookingRd07GetANonNumericIdReturns404"/>
+  </testsuite>
+  <testsuite name="03 Read booking / RD-08 XML is returned when Accept is application/xml" id="04af38eb-8d86-40cd-8551-6f3bc2f57394" timestamp="2026-11-04T19:19:32.821Z" tests="3" failures="1" errors="0" time="0.324">
+    <testcase name="Status code is 200" time="0.324" classname="03ReadBookingRd08XmlIsReturnedWhenAcceptIsApplicationXml"/>
+    <testcase name="Body is XML" time="0.324" classname="03ReadBookingRd08XmlIsReturnedWhenAcceptIsApplicationXml"/>
+    <testcase name="KNOWN-BUG API-BUG-007: Content-Type should be application/xml, not text/html" time="0.324" classname="03ReadBookingRd08XmlIsReturnedWhenAcceptIsApplicationXml">
+      <failure type="AssertionFailure" message="expected 'text/html; charset=utf-8' to include 'xml'">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 03 Read booking / RD-08 XML is returned when Accept is application/xml.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-007: Content-Type should be application/xml, not text/html.]]>
+        <![CDATA[Error message: expected 'text/html; charset=utf-8' to include 'xml'.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 'text/html; charset=utf-8' to include 'xml'
+   at Object.eval sandbox-script.js:3:24).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="03 Read booking / RD-09 Invalid date in filter is rejected with a client error" id="3b975419-7eab-4cbd-93eb-3578ea1085ff" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="1" errors="0" time="0.244">
+    <testcase name="KNOWN-BUG API-BUG-003: should be 400, not a 5xx server error" time="0.244" classname="03ReadBookingRd09InvalidDateInFilterIsRejectedWithAClientError">
+      <failure type="AssertionFailure" message="expected 500 to be within 400..499">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 03 Read booking / RD-09 Invalid date in filter is rejected with a client error.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-003: should be 400, not a 5xx server error.]]>
+        <![CDATA[Error message: expected 500 to be within 400..499.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 500 to be within 400..499
+   at Object.eval sandbox-script.js:1:25).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="03 Read booking / RD-10 Error responses are JSON" id="ec432568-a9d0-4772-bd4d-d4266062c0d7" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="1" errors="0" time="0.240">
+    <testcase name="KNOWN-BUG API-BUG-006: error body should be JSON, not plain text" time="0.240" classname="03ReadBookingRd10ErrorResponsesAreJson">
+      <failure type="AssertionFailure" message="expected 'text/plain; charset=utf-8' to include 'json'">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 03 Read booking / RD-10 Error responses are JSON.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-006: error body should be JSON, not plain text.]]>
+        <![CDATA[Error message: expected 'text/plain; charset=utf-8' to include 'json'.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 'text/plain; charset=utf-8' to include 'json'
+   at Object.eval sandbox-script.js:1:26).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="04 Update booking / UPD-01 PUT with a token cookie replaces the booking" id="1ccbc2ab-be44-4a6b-a322-7f7c33e775db" timestamp="2026-11-04T19:19:32.821Z" tests="5" failures="0" errors="0" time="0.241">
+    <testcase name="Status code is 200" time="0.241" classname="04UpdateBookingUpd01PutWithATokenCookieReplacesTheBooking"/>
+    <testcase name="Content-Type is application/json" time="0.241" classname="04UpdateBookingUpd01PutWithATokenCookieReplacesTheBooking"/>
+    <testcase name="Response matches booking schema" time="0.241" classname="04UpdateBookingUpd01PutWithATokenCookieReplacesTheBooking"/>
+    <testcase name="Response time under 3000 ms" time="0.241" classname="04UpdateBookingUpd01PutWithATokenCookieReplacesTheBooking"/>
+    <testcase name="Fields are updated" time="0.241" classname="04UpdateBookingUpd01PutWithATokenCookieReplacesTheBooking"/>
+  </testsuite>
+  <testsuite name="04 Update booking / UPD-02 Update is persisted" id="cc81c70a-d05d-4501-89cc-1c1707892afd" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="0" errors="0" time="0.242">
+    <testcase name="Status code is 200" time="0.242" classname="04UpdateBookingUpd02UpdateIsPersisted"/>
+    <testcase name="GET returns the updated values" time="0.242" classname="04UpdateBookingUpd02UpdateIsPersisted"/>
+  </testsuite>
+  <testsuite name="04 Update booking / UPD-03 PUT with Basic auth works" id="a0e79cf4-775b-401d-aae7-6124458dce3c" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="0" errors="0" time="0.240">
+    <testcase name="Status code is 200" time="0.240" classname="04UpdateBookingUpd03PutWithBasicAuthWorks"/>
+    <testcase name="Name updated" time="0.240" classname="04UpdateBookingUpd03PutWithBasicAuthWorks"/>
+  </testsuite>
+  <testsuite name="04 Update booking / UPD-04 PATCH changes only the supplied field" id="57e493f0-8835-49b3-a7bd-85ac11e7962f" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="0" errors="0" time="0.240">
+    <testcase name="Status code is 200" time="0.240" classname="04UpdateBookingUpd04PatchChangesOnlyTheSuppliedField"/>
+    <testcase name="Only firstname changed" time="0.240" classname="04UpdateBookingUpd04PatchChangesOnlyTheSuppliedField"/>
+  </testsuite>
+  <testsuite name="04 Update booking / UPD-05 PUT without credentials is forbidden" id="4f4bc2cf-f2a5-4c85-b24d-4ea6f136f93a" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="0" errors="0" time="0.241">
+    <testcase name="Status code is 403" time="0.241" classname="04UpdateBookingUpd05PutWithoutCredentialsIsForbidden"/>
+    <testcase name="Response time under 3000 ms" time="0.241" classname="04UpdateBookingUpd05PutWithoutCredentialsIsForbidden"/>
+  </testsuite>
+  <testsuite name="04 Update booking / UPD-06 PUT with an invalid token is forbidden" id="2ce475a3-edb1-4b51-b9b4-ffece9099c49" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="0" errors="0" time="0.242">
+    <testcase name="Status code is 403" time="0.242" classname="04UpdateBookingUpd06PutWithAnInvalidTokenIsForbidden"/>
+  </testsuite>
+  <testsuite name="04 Update booking / UPD-07 PATCH without credentials is forbidden" id="4f282072-b743-4041-b827-b4335986195c" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="0" errors="0" time="0.243">
+    <testcase name="Status code is 403" time="0.243" classname="04UpdateBookingUpd07PatchWithoutCredentialsIsForbidden"/>
+  </testsuite>
+  <testsuite name="04 Update booking / UPD-08 Forbidden update did not change the booking" id="2651cc76-6d53-4d68-881c-d933a244177a" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="0" errors="0" time="0.249">
+    <testcase name="Status code is 200" time="0.249" classname="04UpdateBookingUpd08ForbiddenUpdateDidNotChangeTheBooking"/>
+    <testcase name="Name is still Patched" time="0.249" classname="04UpdateBookingUpd08ForbiddenUpdateDidNotChangeTheBooking"/>
+  </testsuite>
+  <testsuite name="05 Delete booking / DEL-01 DELETE without credentials is forbidden" id="bfdb3610-cd5f-42fb-b3ad-583007c91c82" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="0" errors="0" time="0.251">
+    <testcase name="Status code is 403" time="0.251" classname="05DeleteBookingDel01DeleteWithoutCredentialsIsForbidden"/>
+  </testsuite>
+  <testsuite name="05 Delete booking / DEL-02 Booking still exists after forbidden delete" id="58e085ac-1939-4338-96c8-705922fe5eb2" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="0" errors="0" time="0.240">
+    <testcase name="Status code is 200" time="0.240" classname="05DeleteBookingDel02BookingStillExistsAfterForbiddenDelete"/>
+  </testsuite>
+  <testsuite name="05 Delete booking / DEL-03 DELETE with a token removes the booking" id="6edea97e-735b-48df-90dd-26cca78e98aa" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="0" errors="0" time="0.243">
+    <testcase name="Status code is 201" time="0.243" classname="05DeleteBookingDel03DeleteWithATokenRemovesTheBooking"/>
+    <testcase name="Response time under 3000 ms" time="0.243" classname="05DeleteBookingDel03DeleteWithATokenRemovesTheBooking"/>
+  </testsuite>
+  <testsuite name="05 Delete booking / DEL-04 Deleted booking can no longer be read" id="2ef761d4-885a-4a59-9188-be3111790b05" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="0" errors="0" time="0.240">
+    <testcase name="Status code is 404" time="0.240" classname="05DeleteBookingDel04DeletedBookingCanNoLongerBeRead"/>
+  </testsuite>
+  <testsuite name="05 Delete booking / DEL-05 Deleting an already-deleted booking returns 404" id="966ff366-8d93-477d-ba4e-4ea82b7f600e" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="1" errors="0" time="0.241">
+    <testcase name="KNOWN-BUG API-BUG-005: should be 404 Not Found, not 405" time="0.241" classname="05DeleteBookingDel05DeletingAnAlreadyDeletedBookingReturns404">
+      <failure type="AssertionFailure" message="expected 405 to deeply equal 404">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 05 Delete booking / DEL-05 Deleting an already-deleted booking returns 404.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-005: should be 404 Not Found, not 405.]]>
+        <![CDATA[Error message: expected 405 to deeply equal 404.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 405 to deeply equal 404
+   at Object.eval sandbox-script.js:1:39).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="05 Delete booking / DEL-06 Updating a deleted booking returns 404" id="92f2734d-f4aa-44c1-8010-949d1b74c7ee" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="1" errors="0" time="0.238">
+    <testcase name="KNOWN-BUG API-BUG-005: should be 404 Not Found, not 405" time="0.238" classname="05DeleteBookingDel06UpdatingADeletedBookingReturns404">
+      <failure type="AssertionFailure" message="expected 405 to deeply equal 404">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 05 Delete booking / DEL-06 Updating a deleted booking returns 404.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-005: should be 404 Not Found, not 405.]]>
+        <![CDATA[Error message: expected 405 to deeply equal 404.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 405 to deeply equal 404
+   at Object.eval sandbox-script.js:1:40).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="06 Security checks / SEC-01 SQL injection in a filter returns no data and no error" id="f947d0cc-6115-4a55-b9eb-16cb4bed6584" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="0" errors="0" time="0.242">
+    <testcase name="Status code is 200" time="0.242" classname="06SecurityChecksSec01SqlInjectionInAFilterReturnsNoDataAndNoError"/>
+    <testcase name="Empty result (injection not executed)" time="0.242" classname="06SecurityChecksSec01SqlInjectionInAFilterReturnsNoDataAndNoError"/>
+  </testsuite>
+  <testsuite name="06 Security checks / SEC-02 Script payload is stored and returned as inert JSON text" id="559561b5-1c67-4494-811c-c5cf21c9a274" timestamp="2026-11-04T19:19:32.821Z" tests="3" failures="0" errors="0" time="0.240">
+    <testcase name="Status code is 200" time="0.240" classname="06SecurityChecksSec02ScriptPayloadIsStoredAndReturnedAsInertJsonText"/>
+    <testcase name="Content-Type is application/json" time="0.240" classname="06SecurityChecksSec02ScriptPayloadIsStoredAndReturnedAsInertJsonText"/>
+    <testcase name="Value returned unchanged inside JSON" time="0.240" classname="06SecurityChecksSec02ScriptPayloadIsStoredAndReturnedAsInertJsonText"/>
+  </testsuite>
+  <testsuite name="06 Security checks / SEC-03 Server errors do not leak stack traces" id="60ac9db0-57c1-4d23-9076-39661992054e" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="0" errors="0" time="0.243">
+    <testcase name="Body has no stack trace or file path" time="0.243" classname="06SecurityChecksSec03ServerErrorsDoNotLeakStackTraces"/>
+  </testsuite>
+  <testsuite name="06 Security checks / SEC-04 Plain HTTP is redirected to HTTPS or refused" id="44c0e210-6701-4e01-a3de-bfcf8e643746" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="1" errors="0" time="0.528">
+    <testcase name="KNOWN-BUG API-BUG-008: HTTP request should redirect (3xx) to HTTPS" time="0.528" classname="06SecurityChecksSec04PlainHttpIsRedirectedToHttpsOrRefused">
+      <failure type="AssertionFailure" message="expected 201 to be within 300..399">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 06 Security checks / SEC-04 Plain HTTP is redirected to HTTPS or refused.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-008: HTTP request should redirect (3xx) to HTTPS.]]>
+        <![CDATA[Error message: expected 201 to be within 300..399.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 201 to be within 300..399
+   at Object.eval sandbox-script.js:1:44).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="06 Security checks / SEC-05 Responses do not disclose the server framework" id="6797f5e5-d1f8-4b88-8162-e0abffd108ee" timestamp="2026-11-04T19:19:32.821Z" tests="2" failures="1" errors="0" time="0.242">
+    <testcase name="Status code is 200" time="0.242" classname="06SecurityChecksSec05ResponsesDoNotDiscloseTheServerFramework"/>
+    <testcase name="KNOWN-BUG API-BUG-009: X-Powered-By header should be absent" time="0.242" classname="06SecurityChecksSec05ResponsesDoNotDiscloseTheServerFramework">
+      <failure type="AssertionFailure" message="expected true to deeply equal false">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 0ecee431-439d-46d2-a02f-cb1388fbc07c.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 06 Security checks / SEC-05 Responses do not disclose the server framework.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-009: X-Powered-By header should be absent.]]>
+        <![CDATA[Error message: expected true to deeply equal false.]]>
+        <![CDATA[Stacktrace: AssertionError: expected true to deeply equal false
+   at Object.eval sandbox-script.js:2:45).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="06 Security checks / SEC-06 Empty token cookie is not accepted" id="913485ae-eabd-439b-afb5-d9da1cb413b2" timestamp="2026-11-04T19:19:32.821Z" tests="1" failures="0" errors="0" time="0.240">
+    <testcase name="Status code is 403" time="0.240" classname="06SecurityChecksSec06EmptyTokenCookieIsNotAccepted"/>
+  </testsuite>
+</testsuites>

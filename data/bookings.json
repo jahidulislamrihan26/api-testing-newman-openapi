@@ -1,0 +1,8 @@
+[
+  { "firstname": "Alice", "lastname": "Smith", "totalprice": 120, "depositpaid": true, "checkin": "2026-12-01", "checkout": "2026-12-05", "additionalneeds": "Breakfast" },
+  { "firstname": "Zoë", "lastname": "Müller", "totalprice": 85, "depositpaid": false, "checkin": "2027-01-10", "checkout": "2027-01-12", "additionalneeds": "Late checkout" },
+  { "firstname": "山田", "lastname": "太郎", "totalprice": 300, "depositpaid": true, "checkin": "2027-02-01", "checkout": "2027-02-08", "additionalneeds": "Quiet room" },
+  { "firstname": "Sean", "lastname": "O'Brien", "totalprice": 99, "depositpaid": false, "checkin": "2027-03-15", "checkout": "2027-03-16", "additionalneeds": "None" },
+  { "firstname": "Free", "lastname": "Stay", "totalprice": 0, "depositpaid": true, "checkin": "2027-04-01", "checkout": "2027-04-02", "additionalneeds": "Promo" },
+  { "firstname": "Big", "lastname": "Spender", "totalprice": 99999, "depositpaid": true, "checkin": "2027-05-01", "checkout": "2027-05-30", "additionalneeds": "Penthouse" }
+]
