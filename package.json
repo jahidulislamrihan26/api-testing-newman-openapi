@@ -1,0 +1,11 @@
+{
+  "name": "api-testing",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "newman run jsonplaceholder.postman_collection.json"
+  },
+  "devDependencies": {
+    "newman": "^6.2.1"
+  }
+}
