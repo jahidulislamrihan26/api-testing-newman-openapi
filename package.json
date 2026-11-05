@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "private": true,
   "description": "Restful-Booker API test suite (Postman collection run by Newman)",
+  "engines": { "node": ">=20" },
   "scripts": {
     "build": "node src/build-collection.js",
     "test": "node src/run-tests.js",

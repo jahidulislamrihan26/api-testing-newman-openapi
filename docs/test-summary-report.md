@@ -8,7 +8,7 @@
 | Detailed results | `reports/functional-report.html`, `reports/data-driven-report.html`, `reports/summary.json` |
 
 ## 1. Executive summary
-Core booking behaviour is correct: create, read, update, patch and delete work, data round-trips exactly, responses match their JSON Schemas, and unauthorised changes are blocked with 403. The API is fast (average 264 ms, p95 324 ms).
+Core booking behaviour is correct: create, read, update, patch and delete work, data round-trips exactly, responses match their JSON Schemas, and unauthorised changes are blocked with 403. The API is fast (average 255 ms, p95 355 ms in the latest run; p95 varied from 266 to 523 ms across runs because the service is shared and public).
 
 The weak area is **input validation and error handling**. The API accepts impossible data (negative prices, check-out before check-in, 10,000-character names), returns **500** for bad client input, signals a failed login with **200 OK**, and is reachable over plain **HTTP**. Nine defects were found; four are Major.
 
@@ -23,7 +23,7 @@ The weak area is **input validation and error handling**. The API accepts imposs
 | Passed | 117 |
 | Expected failures (known defects) | 16 |
 | Unexpected failures | **0** |
-| Average / p95 response time | 264 ms / 324 ms |
+| Average / p95 response time | 255 ms / 355 ms (latest run) |
 | Test data created and removed | 14 / 14 |
 
 ```mermaid

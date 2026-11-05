@@ -68,6 +68,17 @@ const run = (opts) => new Promise((resolve, reject) => newman.run(opts, (err, su
   };
   fs.writeFileSync(path.join(REPORTS, 'summary.json'), JSON.stringify({ ...result, unexpected, knownFailing: knownFailing.map((r) => `${r.request}: ${r.name}`), knownFixed: knownFixed.map((r) => `${r.request}: ${r.name}`) }, null, 2));
 
+  // ---- redact secrets from the generated reports (they are committed and published)
+  const secrets = [get('token'), get('adminPass'), get('basicAuth')].filter((s) => s && s.length >= 6);
+  for (const f of fs.readdirSync(REPORTS)) {
+    if (!/\.(html|xml|json)$/.test(f)) continue;
+    const p = path.join(REPORTS, f);
+    let txt = fs.readFileSync(p, 'utf8');
+    // also match the HTML-escaped form ("=" becomes &#x3D;) that the HTML reporter writes
+    for (const s of secrets) for (const v of [s, s.replace(/=/g, '&#x3D;')]) txt = txt.split(v).join('[redacted]');
+    fs.writeFileSync(p, txt);
+  }
+
   console.log('\n================ RESULT ================');
   console.log(JSON.stringify(result, null, 2));
   if (knownFixed.length) console.log('\nKnown bugs that now PASS (verify and close):\n - ' + knownFixed.map((r) => r.name).join('\n - '));

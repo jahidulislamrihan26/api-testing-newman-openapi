@@ -9,7 +9,7 @@ Automated API test suite for the public [Restful-Booker](https://restful-booker.
 | Assertions executed | **133** (117 pass, 16 expected failures, **0 unexpected**) |
 | Defects found | **9** (4 Major, 5 Minor), each with a failing test that proves it |
 | Test types | Functional, negative, boundary, contract (JSON Schema), security, data-driven |
-| Speed | avg 264 ms, p95 324 ms per request |
+| Speed | avg 255 ms, p95 355 ms per request in the latest run (p95 varied between 266 and 523 ms across runs of a shared public API) |
 | Hygiene | Every booking the suite creates is deleted afterwards (14 of 14 cleaned up) |
 
 ## Highlights
@@ -50,4 +50,6 @@ reports/       HTML, JUnit and JSON results of the last run
 
 ## Notes
 - The test credentials are the ones published in the API's own documentation. For a real system keep secrets in CI secrets, never in the repo.
+- The runner **redacts** the session token, the password and the Basic-auth value from every generated report before it is saved, because reports get committed and published.
+- The 133 assertions in a run are more than the 98 listed in the matrix: the 3 data-driven requests run once for each of the 6 data rows (see the note at the top of the matrix).
 - The API is a shared public service that resets periodically. The suite creates its own data and does not depend on existing bookings.
