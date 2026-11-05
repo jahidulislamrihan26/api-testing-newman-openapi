@@ -25,6 +25,8 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
       - run: npm ci
+      - name: Dependency audit (fails on critical or worse)
+        run: npm audit --audit-level=critical
       - run: npm run lint:spec
       - name: Every relative link in the documents works
         run: node tools/check-links.js
