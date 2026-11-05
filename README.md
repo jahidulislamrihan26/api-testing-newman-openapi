@@ -1,4 +1,6 @@
-# API Testing Project: Restful-Booker
+# API Testing: Restful-Booker with OpenAPI
+
+[![CI](https://github.com/jahidulislamrihan26/api-testing-newman-openapi/actions/workflows/ci.yml/badge.svg)](https://github.com/jahidulislamrihan26/api-testing-newman-openapi/actions/workflows/ci.yml) Part of the [SQA portfolio](https://github.com/jahidulislamrihan26/sqa-portfolio).
 
 Automated, **specification-driven** test suite for the public [Restful-Booker](https://restful-booker.herokuapp.com) hotel-booking API (token and Basic auth, full create/read/update/delete). It is a Postman collection run headlessly with Newman, so it works in the Postman app and in CI.
 
@@ -33,7 +35,7 @@ Automated, **specification-driven** test suite for the public [Restful-Booker](h
 | [docs/test-case-matrix.md](docs/test-case-matrix.md) | Every test case, assertion and linked defect (also as [CSV](docs/test-cases.csv)), plus the validation rows |
 | [docs/defects/](docs/defects/README.md) | 13 defect reports with request, expected, actual and impact |
 | [docs/test-summary-report.md](docs/test-summary-report.md) | Results, findings, recommendations |
-| [Live HTML report](https://jahidulislamrihan26.github.io/sqa-portfolio/api/functional-report.html) | Interactive report from the latest CI run; also [validation matrix](https://jahidulislamrihan26.github.io/sqa-portfolio/api/validation-report.html) and [data-driven run](https://jahidulislamrihan26.github.io/sqa-portfolio/api/data-driven-report.html) |
+| [Live HTML report](https://jahidulislamrihan26.github.io/api-testing-newman-openapi/functional-report.html) | Interactive report from the latest CI run; also [validation matrix](https://jahidulislamrihan26.github.io/api-testing-newman-openapi/validation-report.html) and [data-driven run](https://jahidulislamrihan26.github.io/api-testing-newman-openapi/data-driven-report.html) |
 
 ## Run it
 ```bash
@@ -61,3 +63,9 @@ reports/       HTML, JUnit and JSON results of the last run
 - The runner **redacts** the session token, the password and the Basic-auth value from every generated report before it is saved, because reports get committed and published.
 - A run executes more assertions (186) than the matrix lists (137 fixed ones): the 3 data-driven requests run once for each of the 6 bookings rows, and the validation request runs once for each of its 14 rows (see the note at the top of the matrix).
 - The API is a shared public service that resets periodically. The suite creates its own data and does not depend on existing bookings.
+
+## Related projects
+- [manual-testing-saucedemo](https://github.com/jahidulislamrihan26/manual-testing-saucedemo): manual testing package with strategy, cases and defect reports.
+- [playwright-ui-automation-pom](https://github.com/jahidulislamrihan26/playwright-ui-automation-pom): UI automation with the same expected-failure approach for known defects.
+- [k6-performance-testing](https://github.com/jahidulislamrihan26/k6-performance-testing): performance testing.
+- [qa-templates](https://github.com/jahidulislamrihan26/qa-templates): reusable test plan and report templates.

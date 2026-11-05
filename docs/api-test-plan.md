@@ -66,4 +66,4 @@ Full list: [test-case-matrix.md](test-case-matrix.md). Coverage of the spec: [ap
 | Behaviour changes upstream | Failures show up as unexpected failures or as "known bug now passing" |
 
 ## 8. Out of scope
-Load and stress testing (see the `performance-testing` project), UI behaviour, rate limiting, long-term token expiry (cannot be observed in a short run), concurrency races.
+Load and stress testing (see the [k6-performance-testing](https://github.com/jahidulislamrihan26/k6-performance-testing) repository), UI behaviour, rate limiting, long-term token expiry (cannot be observed in a short run), concurrency races.

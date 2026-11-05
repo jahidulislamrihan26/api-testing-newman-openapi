@@ -5,7 +5,7 @@
 | API | https://restful-booker.herokuapp.com |
 | Run date | 2026-11-05 |
 | Tool | Newman 6 running a Postman collection built from an OpenAPI 3 specification |
-| Detailed results | [Live HTML reports](https://jahidulislamrihan26.github.io/sqa-portfolio/api/functional-report.html), `reports/*.html`, `reports/summary.json` |
+| Detailed results | [Live HTML reports](https://jahidulislamrihan26.github.io/api-testing-newman-openapi/functional-report.html), `reports/*.html`, `reports/summary.json` |
 
 ## 1. Executive summary
 Core booking behaviour is correct: create, read, update, patch and delete work, valid data round-trips exactly, responses match their JSON Schemas, conditional requests (ETag and 304) work, unknown fields are ignored (no mass assignment), and unauthorised changes are blocked with 403. The API is fast (average 282 to 327 ms across three runs).
@@ -76,7 +76,7 @@ pie title Defects by severity (13)
 
 ## 6. Limitations
 - Token expiry, rate limiting and concurrency races were not tested.
-- Load behaviour is covered separately in the `performance-testing` project.
+- Load behaviour is covered separately in the [k6-performance-testing](https://github.com/jahidulislamrihan26/k6-performance-testing) repository.
 - The API is a shared public service; results can differ if it is reset or changed. One early test used a hardcoded booking that another user had deleted and was fixed to use only its own data.
 - The OpenAPI file was written by the tester; it is not published by the API owner.
 
