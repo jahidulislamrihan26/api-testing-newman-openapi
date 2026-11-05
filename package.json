@@ -20,7 +20,9 @@
     "build": "node src/build-collection.js",
     "lint:spec": "node src/lint-spec.js",
     "test": "node src/run-tests.js",
-    "test:smoke": "node src/run-tests.js --smoke"
+    "test:smoke": "node src/run-tests.js --smoke",
+    "reference": "node reference-server/server.js",
+    "mutation": "node src/mutation.js"
   },
   "devDependencies": {
     "@apidevtools/swagger-parser": "^13.1.0",

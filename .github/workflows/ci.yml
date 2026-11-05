@@ -37,6 +37,27 @@ jobs:
           name: api-reports
           path: reports
 
+  # Proves the suite would catch regressions: 20 injected faults against a local reference server (no internet needed).
+  mutation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm ci
+      - name: Mutation testing (every injected fault must be caught)
+        run: npm run mutation
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: mutation-report
+          path: |
+            docs/mutation-report.md
+            reports/mutation.json
+
   # Publishes the reports as a small website: https://jahidulislamrihan26.github.io/api-testing-newman-openapi/
   pages:
     needs: test

@@ -5,11 +5,17 @@ const path = require('path');
 const newman = require('newman');
 
 const ROOT = path.join(__dirname, '..');
-const REPORTS = path.join(ROOT, 'reports');
+const REPORTS = process.env.REPORTS_DIR ? path.resolve(process.env.REPORTS_DIR) : path.join(ROOT, 'reports');
 fs.mkdirSync(REPORTS, { recursive: true });
 
 const collection = path.join(ROOT, 'collections', 'restful-booker.postman_collection.json');
 const environment = JSON.parse(fs.readFileSync(path.join(ROOT, 'environments', 'qa.postman_environment.json'), 'utf8'));
+// BASE_URL / BASE_URL_HTTP point the suite at another server (the reference server, a staging copy).
+for (const [envName, key] of [['BASE_URL', 'baseUrl'], ['BASE_URL_HTTP', 'baseUrlHttp']]) {
+  const v = process.env[envName];
+  const e = environment.values.find((x) => x.key === key);
+  if (v && e) e.value = v;
+}
 const folders = JSON.parse(fs.readFileSync(collection, 'utf8')).item.map((f) => f.name);
 const isDataDriven = (n) => /^9\d /.test(n);
 const functional = folders.filter((n) => !isDataDriven(n));
