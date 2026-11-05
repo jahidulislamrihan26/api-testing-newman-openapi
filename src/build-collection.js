@@ -150,7 +150,7 @@ all.forEach((r) => md.push(`| ${r.id} | ${r.type} | \`${r.method} ${esc(r.path)}
 fs.mkdirSync(path.join(ROOT, 'docs'), { recursive: true });
 fs.writeFileSync(path.join(ROOT, 'docs', 'test-case-matrix.md'), md.join('\n') + '\n');
 const cell = (v) => '"' + String(v).replace(/"/g, '""') + '"';
-fs.writeFileSync(path.join(ROOT, 'docs', 'test-cases.csv'), '﻿' + [['ID', 'Folder', 'Type', 'Method', 'Endpoint', 'Scenario', 'Assertions', 'Known defect'], ...all.map((r) => [r.id, r.folder, r.type, r.method, r.path, r.title, names(r).join('; '), (r.bugs || []).join(', ')])].map((x) => x.map(cell).join(',')).join('\r\n') + '\r\n');
+fs.writeFileSync(path.join(ROOT, 'docs', 'test-cases.csv'), '﻿' + [['ID', 'Folder', 'Type', 'Method', 'Endpoint', 'Scenario', 'Assertions', 'Known defect'], ...all.map((r) => [r.id, r.folder, r.type, r.method, r.path, r.title, names(r).join('; '), (r.bugs || []).join(', ')])].map((x) => x.map(cell).join(',')).join('\n') + '\n');
 
 // defect pages
 fs.mkdirSync(path.join(ROOT, 'docs', 'defects'), { recursive: true });
