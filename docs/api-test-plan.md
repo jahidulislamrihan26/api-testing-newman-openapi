@@ -37,7 +37,7 @@ Full list: [test-case-matrix.md](test-case-matrix.md). Coverage of the spec: [ap
 
 ## 4. Design decisions
 - **Spec-driven.** The collection builder reads schemas from `spec/openapi.yaml`; a validator (`npm run lint:spec`, also run before every test run and in CI) rejects a broken spec; the coverage report compares documented responses with asserted status codes.
-- **Honest coverage.** A generic "any 4xx" assertion only counts for the documented 400. 401, 403, 404, 406, 415 and 304 each need an assertion on that exact code. This exposed a real gap (406 on create) that was then closed.
+- **Strict coverage.** A generic "any 4xx" assertion only counts for the documented 400. 401, 403, 404, 406, 415 and 304 each need an assertion on that exact code. This exposed a real gap (406 on create) that was then closed.
 - **Independent, self-cleaning data.** Each run creates its own bookings with a unique last name and deletes everything at the end, so it is safe on a shared service and repeatable. No test relies on bookings other people may delete (an early version did and was fixed).
 - **Tests assert correct behaviour.** For known defects there are two assertions: one documents what the API does today, and a `KNOWN-BUG` assertion states what it should do. The second fails until the defect is fixed.
 - **Expected failures do not hide regressions.** The runner passes only if every non-KNOWN-BUG assertion passes. If a KNOWN-BUG assertion starts passing, it is listed so the defect can be closed.
