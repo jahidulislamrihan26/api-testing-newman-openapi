@@ -1,0 +1,248 @@
+openapi: 3.0.3
+info:
+  title: Restful-Booker API (as tested)
+  version: 1.0.0
+  description: |
+    Specification of the public Restful-Booker hotel-booking API, written by the tester from the published
+    documentation, from observed behaviour and from HTTP conventions. The API ships no specification of its own.
+
+    This file is the single source of truth for the test suite: the response schemas used in the Postman
+    collection are read from `components.schemas`, and the coverage report compares tested status codes with the
+    responses declared here.
+
+    Responses describe the **correct** behaviour. Where the live API deviates, the deviation is recorded in an
+    `x-observed` note with the defect id (see `docs/defects`).
+servers:
+  - url: https://restful-booker.herokuapp.com
+tags:
+  - name: Health
+  - name: Authentication
+  - name: Booking
+paths:
+  /ping:
+    get:
+      tags: [Health]
+      operationId: ping
+      summary: Health check
+      description: Documented by the API as returning 201 Created.
+      responses:
+        '201':
+          description: Service is up
+          content:
+            text/plain:
+              schema: { type: string }
+  /auth:
+    post:
+      tags: [Authentication]
+      operationId: createToken
+      summary: Exchange credentials for a token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AuthRequest' }
+      responses:
+        '200':
+          description: Token issued
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TokenResponse' }
+        '400':
+          description: Missing fields
+        '401':
+          description: Credentials rejected
+          x-observed: 'API-BUG-001: the live API returns 200 with {"reason":"Bad credentials"} instead of 401.'
+  /booking:
+    get:
+      tags: [Booking]
+      operationId: listBookings
+      summary: List booking ids, optionally filtered
+      parameters:
+        - { name: firstname, in: query, schema: { type: string }, description: 'Exact, case-sensitive match.' }
+        - { name: lastname, in: query, schema: { type: string }, description: 'Exact, case-sensitive match.' }
+        - name: checkin
+          in: query
+          schema: { type: string, pattern: '^\d{4}-\d{2}-\d{2}$' }
+          description: Bookings whose check-in is later than this date (observed as strictly greater than; an equal date is excluded).
+        - name: checkout
+          in: query
+          schema: { type: string, pattern: '^\d{4}-\d{2}-\d{2}$' }
+          description: Date filter on check-out.
+      responses:
+        '200':
+          description: Matching ids (possibly empty)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/BookingIdList' }
+        '400':
+          description: Malformed filter value
+          x-observed: 'API-BUG-003: an invalid date returns 500.'
+    post:
+      tags: [Booking]
+      operationId: createBooking
+      summary: Create a booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Booking' }
+      responses:
+        '200':
+          description: Booking created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CreatedBooking' }
+        '400':
+          description: Invalid body (malformed JSON, missing or invalid fields)
+          x-observed: 'API-BUG-002 and API-BUG-004: many invalid bodies return 500 or are accepted. API-BUG-012: invalid dates are stored as text such as 0NaN-aN-aN and decimals are truncated.'
+        '415':
+          description: Unsupported Content-Type
+          x-observed: 'API-BUG-010: a form, plain-text or missing Content-Type returns 500.'
+        '406':
+          description: Unsupported Accept header
+          x-observed: 'API-BUG-011: the live API returns 418 I am a Teapot.'
+  /booking/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: integer, minimum: 1 }
+    get:
+      tags: [Booking]
+      operationId: getBooking
+      summary: Read one booking (JSON or XML; supports ETag and conditional requests)
+      description: 'Paths are matched case-insensitively (observed, so /Booking/{id} also works).'
+      responses:
+        '200':
+          description: The booking
+          headers:
+            ETag: { schema: { type: string } }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Booking' }
+            application/xml:
+              schema: { type: string }
+          x-observed: 'API-BUG-007: the XML body is labelled text/html.'
+        '304':
+          description: Not modified (If-None-Match matched the ETag)
+        '404':
+          description: No such booking
+          x-observed: 'API-BUG-006: error bodies are plain text, not JSON.'
+    put:
+      tags: [Booking]
+      operationId: replaceBooking
+      summary: Replace a booking (all fields required; idempotent)
+      security: [{ cookieAuth: [] }, { basicAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Booking' }
+      responses:
+        '200':
+          description: Updated booking
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Booking' }
+        '400':
+          description: Missing required fields
+        '403':
+          description: Missing or invalid credentials
+        '404':
+          description: No such booking
+          x-observed: 'API-BUG-005: a deleted booking returns 405.'
+    patch:
+      tags: [Booking]
+      operationId: updateBooking
+      summary: Partially update a booking
+      security: [{ cookieAuth: [] }, { basicAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/BookingPatch' }
+      responses:
+        '200':
+          description: Updated booking
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Booking' }
+        '400':
+          description: Invalid value
+          x-observed: 'API-BUG-004: an invalid price is accepted and stored as null.'
+        '403':
+          description: Missing or invalid credentials
+    delete:
+      tags: [Booking]
+      operationId: deleteBooking
+      summary: Delete a booking
+      security: [{ cookieAuth: [] }, { basicAuth: [] }]
+      responses:
+        '201':
+          description: Deleted (documented by the API as 201 Created)
+        '403':
+          description: Missing or invalid credentials
+        '404':
+          description: No such booking
+          x-observed: 'API-BUG-005: a booking that was already deleted returns 405.'
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+      description: Token from POST /auth, sent as the cookie `token=...`.
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    AuthRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username: { type: string }
+        password: { type: string }
+    TokenResponse:
+      type: object
+      required: [token]
+      properties:
+        token: { type: string, minLength: 8 }
+    BookingDates:
+      type: object
+      required: [checkin, checkout]
+      properties:
+        checkin: { type: string, pattern: '^\d{4}-\d{2}-\d{2}$', example: '2026-12-01' }
+        checkout: { type: string, pattern: '^\d{4}-\d{2}-\d{2}$', example: '2026-12-05' }
+    Booking:
+      type: object
+      required: [firstname, lastname, totalprice, depositpaid, bookingdates]
+      properties:
+        firstname: { type: string, minLength: 1 }
+        lastname: { type: string, minLength: 1 }
+        totalprice: { type: number, minimum: 0 }
+        depositpaid: { type: boolean }
+        bookingdates: { $ref: '#/components/schemas/BookingDates' }
+        additionalneeds: { type: string }
+    BookingPatch:
+      type: object
+      description: Any subset of Booking fields.
+      properties:
+        firstname: { type: string }
+        lastname: { type: string }
+        totalprice: { type: number, minimum: 0 }
+        depositpaid: { type: boolean }
+        bookingdates: { $ref: '#/components/schemas/BookingDates' }
+        additionalneeds: { type: string }
+    CreatedBooking:
+      type: object
+      required: [bookingid, booking]
+      properties:
+        bookingid: { type: integer, minimum: 1 }
+        booking: { $ref: '#/components/schemas/Booking' }
+    BookingIdList:
+      type: array
+      items:
+        type: object
+        required: [bookingid]
+        properties:
+          bookingid: { type: integer }

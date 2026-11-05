@@ -362,7 +362,7 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
                   "pm.test(\"Content-Type is application/json\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
-                  "pm.test(\"Response matches created-booking schema\", () => pm.response.to.have.jsonSchema({\"type\":\"object\",\"required\":[\"bookingid\",\"booking\"],\"properties\":{\"bookingid\":{\"type\":\"integer\",\"minimum\":1},\"booking\":{\"type\":\"object\",\"required\":[\"firstname\",\"lastname\",\"totalprice\",\"depositpaid\",\"bookingdates\"],\"properties\":{\"firstname\":{\"type\":\"string\"},\"lastname\":{\"type\":\"string\"},\"totalprice\":{\"type\":\"number\"},\"depositpaid\":{\"type\":\"boolean\"},\"bookingdates\":{\"type\":\"object\",\"required\":[\"checkin\",\"checkout\"],\"properties\":{\"checkin\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"},\"checkout\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"}}},\"additionalneeds\":{\"type\":\"string\"}}}}}));",
+                  "pm.test(\"Response matches created-booking schema\", () => pm.response.to.have.jsonSchema({\"type\":\"object\",\"required\":[\"bookingid\",\"booking\"],\"properties\":{\"bookingid\":{\"type\":\"integer\",\"minimum\":1},\"booking\":{\"type\":\"object\",\"required\":[\"firstname\",\"lastname\",\"totalprice\",\"depositpaid\",\"bookingdates\"],\"properties\":{\"firstname\":{\"type\":\"string\",\"minLength\":1},\"lastname\":{\"type\":\"string\",\"minLength\":1},\"totalprice\":{\"type\":\"number\",\"minimum\":0},\"depositpaid\":{\"type\":\"boolean\"},\"bookingdates\":{\"type\":\"object\",\"required\":[\"checkin\",\"checkout\"],\"properties\":{\"checkin\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"},\"checkout\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"}}},\"additionalneeds\":{\"type\":\"string\"}}}}}));",
                   "pm.test(\"Response time under 3000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(3000));",
                   "pm.test(\"Echoes the submitted booking\", () => { const b = pm.response.json().booking; pm.expect(b.firstname).to.eql(\"QA\"); pm.expect(b.lastname).to.eql(pm.collectionVariables.get(\"uniq\")); pm.expect(b.totalprice).to.eql(150); pm.expect(b.depositpaid).to.eql(true); pm.expect(b.bookingdates).to.eql({checkin:\"2026-12-01\",checkout:\"2026-12-05\"}); });",
                   "pm.collectionVariables.set(\"bookingId\", pm.response.json().bookingid);",
@@ -981,7 +981,7 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
                   "pm.test(\"Content-Type is application/json\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
-                  "pm.test(\"Response matches booking schema\", () => pm.response.to.have.jsonSchema({\"type\":\"object\",\"required\":[\"firstname\",\"lastname\",\"totalprice\",\"depositpaid\",\"bookingdates\"],\"properties\":{\"firstname\":{\"type\":\"string\"},\"lastname\":{\"type\":\"string\"},\"totalprice\":{\"type\":\"number\"},\"depositpaid\":{\"type\":\"boolean\"},\"bookingdates\":{\"type\":\"object\",\"required\":[\"checkin\",\"checkout\"],\"properties\":{\"checkin\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"},\"checkout\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"}}},\"additionalneeds\":{\"type\":\"string\"}}}));",
+                  "pm.test(\"Response matches booking schema\", () => pm.response.to.have.jsonSchema({\"type\":\"object\",\"required\":[\"firstname\",\"lastname\",\"totalprice\",\"depositpaid\",\"bookingdates\"],\"properties\":{\"firstname\":{\"type\":\"string\",\"minLength\":1},\"lastname\":{\"type\":\"string\",\"minLength\":1},\"totalprice\":{\"type\":\"number\",\"minimum\":0},\"depositpaid\":{\"type\":\"boolean\"},\"bookingdates\":{\"type\":\"object\",\"required\":[\"checkin\",\"checkout\"],\"properties\":{\"checkin\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"},\"checkout\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"}}},\"additionalneeds\":{\"type\":\"string\"}}}));",
                   "pm.test(\"Response time under 3000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(3000));",
                   "pm.test(\"Matches what was created\", () => { pm.expect(pm.response.json()).to.eql(JSON.parse(pm.collectionVariables.get(\"expected\"))); });"
                 ]
@@ -1161,6 +1161,135 @@
               }
             }
           ]
+        },
+        {
+          "name": "RD-11 Check-in filter is strictly \"later than\" (observed)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking?checkin=2026-11-30&lastname={{uniq}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ],
+              "query": [
+                {
+                  "key": "checkin",
+                  "value": "2026-11-30"
+                },
+                {
+                  "key": "lastname",
+                  "value": "{{uniq}}"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Booking with check-in 2026-12-01 is found for a filter date before it\", () => { pm.expect(pm.response.json().map(x => x.bookingid)).to.include(Number(pm.collectionVariables.get(\"bookingId\"))); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "RD-12 Check-in filter with the exact date excludes the booking (observed)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking?checkin=2026-12-01&lastname={{uniq}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ],
+              "query": [
+                {
+                  "key": "checkin",
+                  "value": "2026-12-01"
+                },
+                {
+                  "key": "lastname",
+                  "value": "{{uniq}}"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Booking with check-in 2026-12-01 is NOT found for filter date 2026-12-01\", () => { pm.expect(pm.response.json().map(x => x.bookingid)).to.not.include(Number(pm.collectionVariables.get(\"bookingId\"))); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "RD-13 Name filters are case sensitive (observed)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking?firstname=qa&lastname={{uniq}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ],
+              "query": [
+                {
+                  "key": "firstname",
+                  "value": "qa"
+                },
+                {
+                  "key": "lastname",
+                  "value": "{{uniq}}"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Lower-case qa does not match QA\", () => { pm.expect(pm.response.json()).to.eql([]); });"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -1213,7 +1342,7 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
                   "pm.test(\"Content-Type is application/json\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
-                  "pm.test(\"Response matches booking schema\", () => pm.response.to.have.jsonSchema({\"type\":\"object\",\"required\":[\"firstname\",\"lastname\",\"totalprice\",\"depositpaid\",\"bookingdates\"],\"properties\":{\"firstname\":{\"type\":\"string\"},\"lastname\":{\"type\":\"string\"},\"totalprice\":{\"type\":\"number\"},\"depositpaid\":{\"type\":\"boolean\"},\"bookingdates\":{\"type\":\"object\",\"required\":[\"checkin\",\"checkout\"],\"properties\":{\"checkin\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"},\"checkout\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"}}},\"additionalneeds\":{\"type\":\"string\"}}}));",
+                  "pm.test(\"Response matches booking schema\", () => pm.response.to.have.jsonSchema({\"type\":\"object\",\"required\":[\"firstname\",\"lastname\",\"totalprice\",\"depositpaid\",\"bookingdates\"],\"properties\":{\"firstname\":{\"type\":\"string\",\"minLength\":1},\"lastname\":{\"type\":\"string\",\"minLength\":1},\"totalprice\":{\"type\":\"number\",\"minimum\":0},\"depositpaid\":{\"type\":\"boolean\"},\"bookingdates\":{\"type\":\"object\",\"required\":[\"checkin\",\"checkout\"],\"properties\":{\"checkin\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"},\"checkout\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"}}},\"additionalneeds\":{\"type\":\"string\"}}}));",
                   "pm.test(\"Response time under 3000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(3000));",
                   "pm.test(\"Fields are updated\", () => { const b = pm.response.json(); pm.expect(b.firstname).to.eql(\"Updated\"); pm.expect(b.totalprice).to.eql(200); });"
                 ]
@@ -1537,7 +1666,864 @@
       ]
     },
     {
-      "name": "05 Delete booking",
+      "name": "05 HTTP behaviour and robustness",
+      "item": [
+        {
+          "name": "HTTP-01 HEAD returns the headers and no body",
+          "request": {
+            "method": "HEAD",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Content-Type is application/json\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "pm.test(\"ETag header is present\", () => { pm.expect(pm.response.headers.has(\"ETag\")).to.eql(true); });",
+                  "pm.test(\"Body is empty\", () => { pm.expect(pm.response.text()).to.eql(\"\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-02 OPTIONS lists the allowed methods",
+          "request": {
+            "method": "OPTIONS",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Allow header lists GET, PUT, PATCH and DELETE\", () => { const a = pm.response.headers.get(\"Allow\") || \"\"; [\"GET\", \"PUT\", \"PATCH\", \"DELETE\"].forEach((m) => pm.expect(a).to.include(m)); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-03 GET returns an ETag",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"ETag is returned\", () => { pm.expect(pm.response.headers.has(\"ETag\")).to.eql(true); });",
+                  "pm.collectionVariables.set(\"etag\", pm.response.headers.get(\"ETag\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-04 Conditional GET with a matching ETag returns 304 and no body",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "If-None-Match",
+                "value": "{{etag}}"
+              },
+              {
+                "key": "Cache-Control",
+                "value": "max-age=0"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 304\", () => pm.response.to.have.status(304));",
+                  "pm.test(\"Body is empty\", () => { pm.expect(pm.response.text()).to.eql(\"\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-05 GET with a different ETag returns the booking",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "If-None-Match",
+                "value": "W/\"not-the-etag\""
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Content-Type is application/json\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-06 Unsupported Content-Type (form data) is rejected with 415",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "firstname=A&lastname=B&totalprice=1&depositpaid=true",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"KNOWN-BUG API-BUG-010: should be 415 Unsupported Media Type, not a 5xx error\", () => { pm.expect(pm.response.code).to.eql(415); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-07 Unsupported Content-Type (plain text) is rejected with 415",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"firstname\":\"A\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"KNOWN-BUG API-BUG-010: should be 415 Unsupported Media Type, not a 5xx error\", () => { pm.expect(pm.response.code).to.eql(415); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-08 Unsupported Accept header returns 406",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "image/png"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"KNOWN-BUG API-BUG-011: should be 406 Not Acceptable, not 418 I am a Teapot\", () => { pm.expect(pm.response.code).to.eql(406); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-09 Booking id 0 returns 404",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "0"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-10 Negative booking id returns 404",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/-1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "-1"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-11 Fractional booking id (12.5) returns 404, not booking 12",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}.5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}.5"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"KNOWN-BUG API-BUG-013: id with a fractional part should be 404, not the booking with the whole-number id\", () => { pm.expect(pm.response.code).to.eql(404); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-11B Booking id followed by letters (12abc) returns 404, not booking 12",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}abc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}abc"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"KNOWN-BUG API-BUG-013: id with trailing letters should be 404, not the booking with the numeric prefix\", () => { pm.expect(pm.response.code).to.eql(404); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-12 Oversized booking id returns 404",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/99999999999999999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "99999999999999999999"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-13 Path matching is case-insensitive: /Booking/{id} works (observed)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/Booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Booking",
+                "{{bookingId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Content-Type is application/json\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-14 First PUT of a replacement",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "token={{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstname\": \"Idempotent\",\n  \"lastname\": \"{{uniq}}\",\n  \"totalprice\": 150,\n  \"depositpaid\": true,\n  \"bookingdates\": {\n    \"checkin\": \"2026-12-01\",\n    \"checkout\": \"2026-12-05\"\n  },\n  \"additionalneeds\": \"Breakfast\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set(\"put1\", pm.response.text());"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-15 Repeating the same PUT gives the same result (idempotent)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "token={{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstname\": \"Idempotent\",\n  \"lastname\": \"{{uniq}}\",\n  \"totalprice\": 150,\n  \"depositpaid\": true,\n  \"bookingdates\": {\n    \"checkin\": \"2026-12-01\",\n    \"checkout\": \"2026-12-05\"\n  },\n  \"additionalneeds\": \"Breakfast\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Second response equals the first\", () => { pm.expect(JSON.parse(pm.response.text())).to.eql(JSON.parse(pm.collectionVariables.get(\"put1\"))); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-16 Unknown fields on create are ignored (no mass assignment)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstname\": \"QA\",\n  \"lastname\": \"{{uniq}}\",\n  \"totalprice\": 150,\n  \"depositpaid\": true,\n  \"bookingdates\": {\n    \"checkin\": \"2026-12-01\",\n    \"checkout\": \"2026-12-05\"\n  },\n  \"additionalneeds\": \"Breakfast\",\n  \"bookingid\": 1,\n  \"admin\": true,\n  \"role\": \"admin\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Extra fields are not stored or echoed\", () => { const j = pm.response.json(); pm.expect(j.booking).to.not.have.any.keys(\"admin\", \"role\", \"bookingid\"); pm.expect(j.bookingid).to.not.eql(1); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-17 PATCH ignores unknown fields",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "token={{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"hacker\":\"x\",\"isAdmin\":true}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Unknown fields are not returned\", () => { pm.expect(pm.response.json()).to.not.have.any.keys(\"hacker\", \"isAdmin\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-18 PUT with missing required fields is rejected with 400",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "token={{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"firstname\":\"OnlyName\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Response time under 3000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(3000));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-19 PATCH with an invalid price is rejected",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "token={{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking/{{bookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"totalprice\":\"abc\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"KNOWN-BUG API-BUG-004: invalid price should be rejected with 400, not stored as null\", () => { pm.expect(pm.response.code).to.be.within(400, 499); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HTTP-20 Unsupported Accept header on create returns 406",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "image/png"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstname\": \"QA\",\n  \"lastname\": \"{{uniq}}\",\n  \"totalprice\": 150,\n  \"depositpaid\": true,\n  \"bookingdates\": {\n    \"checkin\": \"2026-12-01\",\n    \"checkout\": \"2026-12-05\"\n  },\n  \"additionalneeds\": \"Breakfast\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"KNOWN-BUG API-BUG-011: should be 406 Not Acceptable, not 418 I am a Teapot\", () => { pm.expect(pm.response.code).to.eql(406); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06 Delete booking",
       "item": [
         {
           "name": "DEL-01 DELETE without credentials is forbidden",
@@ -1766,7 +2752,7 @@
       ]
     },
     {
-      "name": "06 Security checks",
+      "name": "07 Security checks",
       "item": [
         {
           "name": "SEC-01 SQL injection in a filter returns no data and no error",
@@ -1945,13 +2931,12 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/booking/1",
+              "raw": "{{baseUrl}}/ping",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "booking",
-                "1"
+                "ping"
               ]
             }
           },
@@ -1961,7 +2946,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
                   "pm.test(\"KNOWN-BUG API-BUG-009: X-Powered-By header should be absent\", () => { pm.expect(pm.response.headers.has(\"X-Powered-By\")).to.eql(false); });"
                 ]
               }
@@ -2063,7 +3048,7 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
-                  "pm.test(\"Response matches created-booking schema\", () => pm.response.to.have.jsonSchema({\"type\":\"object\",\"required\":[\"bookingid\",\"booking\"],\"properties\":{\"bookingid\":{\"type\":\"integer\",\"minimum\":1},\"booking\":{\"type\":\"object\",\"required\":[\"firstname\",\"lastname\",\"totalprice\",\"depositpaid\",\"bookingdates\"],\"properties\":{\"firstname\":{\"type\":\"string\"},\"lastname\":{\"type\":\"string\"},\"totalprice\":{\"type\":\"number\"},\"depositpaid\":{\"type\":\"boolean\"},\"bookingdates\":{\"type\":\"object\",\"required\":[\"checkin\",\"checkout\"],\"properties\":{\"checkin\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"},\"checkout\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"}}},\"additionalneeds\":{\"type\":\"string\"}}}}}));",
+                  "pm.test(\"Response matches created-booking schema\", () => pm.response.to.have.jsonSchema({\"type\":\"object\",\"required\":[\"bookingid\",\"booking\"],\"properties\":{\"bookingid\":{\"type\":\"integer\",\"minimum\":1},\"booking\":{\"type\":\"object\",\"required\":[\"firstname\",\"lastname\",\"totalprice\",\"depositpaid\",\"bookingdates\"],\"properties\":{\"firstname\":{\"type\":\"string\",\"minLength\":1},\"lastname\":{\"type\":\"string\",\"minLength\":1},\"totalprice\":{\"type\":\"number\",\"minimum\":0},\"depositpaid\":{\"type\":\"boolean\"},\"bookingdates\":{\"type\":\"object\",\"required\":[\"checkin\",\"checkout\"],\"properties\":{\"checkin\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"},\"checkout\":{\"type\":\"string\",\"pattern\":\"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\"}}},\"additionalneeds\":{\"type\":\"string\"}}}}}));",
                   "pm.collectionVariables.set(\"ddId\", pm.response.json().bookingid);",
                   "pm.test(\"Echoes first name and last name\", () => { const b = pm.response.json().booking; pm.expect(b.firstname).to.eql(pm.iterationData.get(\"firstname\")); pm.expect(b.lastname).to.eql(pm.iterationData.get(\"lastname\")); });",
                   "pm.test(\"Echoes price and deposit flag\", () => { const b = pm.response.json().booking; pm.expect(b.totalprice).to.eql(Number(pm.iterationData.get(\"totalprice\"))); pm.expect(String(b.depositpaid)).to.eql(String(pm.iterationData.get(\"depositpaid\"))); });"
@@ -2138,6 +3123,73 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "91 Validation matrix (data-driven)",
+      "item": [
+        {
+          "name": "VAL-01 Invalid or unusual booking body: {{name}}",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const row = pm.iterationData.toObject();",
+                  "pm.request.body.update(JSON.stringify(row.payload));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const row = pm.iterationData.toObject();",
+                  "const code = pm.response.code;",
+                  "const rejected = code >= 400 && code < 500;",
+                  "let exact = false;",
+                  "if (code === 200) { try { exact = _.isEqual(pm.response.json().booking, row.payload); } catch (e) {} }",
+                  "const label = row.name + (row.mustReject ? \" is rejected with a 4xx status\" : \" is rejected or stored exactly as sent\");",
+                  "const ok = row.mustReject ? rejected : (rejected || exact);",
+                  "pm.test((row.bug ? \"KNOWN-BUG \" + row.bug + \": \" : \"\") + label, () => pm.expect(ok, \"status \" + code).to.eql(true));"
                 ]
               }
             }

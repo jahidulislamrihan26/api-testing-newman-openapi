@@ -1,4 +1,4 @@
-# API-BUG-002: Missing required fields cause 500 Internal Server Error
+# API-BUG-002: Missing, null or wrong-type values cause 500 Internal Server Error
 
 | Field | Value |
 |---|---|
@@ -12,15 +12,18 @@
 
 ## Steps to reproduce
 ```
-POST /booking
-{"firstname":"OnlyName"}      (also: {})
+POST /booking with each of:
+  {"firstname":"OnlyName"}   and   {}
+  firstname null, firstname 123
+  depositpaid null, totalprice null
+  bookingdates missing, bookingdates {}
 ```
 
 ## Expected
-HTTP 400 or 422 with a message naming the missing fields.
+HTTP 400 or 422 with a message naming the problem field.
 
 ## Actual
-HTTP 500 Internal Server Error, plain text body.
+HTTP 500 Internal Server Error, plain text body, for every one of these. A PUT with missing fields correctly returns 400, so POST and PUT are inconsistent.
 
 ## Impact
 Invalid client input looks like a server fault: false alerts, no actionable message for the caller, and an unhandled exception path in the server.

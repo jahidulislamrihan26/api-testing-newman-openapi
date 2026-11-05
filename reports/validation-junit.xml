@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Restful-Booker API Tests" tests="14" time="4.229">
+  <testsuite name="91 Validation matrix (data-driven) / VAL-01 Invalid or unusual booking body: {{name}}" id="7a066980-3f03-4878-8ada-d363680db9a5" timestamp="2026-11-05T08:26:39.898Z" tests="1" failures="12" errors="0" time="0.302">
+    <testcase name="KNOWN-BUG API-BUG-004: empty first name is rejected with a 4xx status" time="0.286" classname="91ValidationMatrixDataDrivenVal01InvalidOrUnusualBookingBodyName">
+      <failure type="AssertionFailure" message="status 200: expected false to deeply equal true">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 7d575535-546b-4c09-8cd1-36252b4c432b.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 91 Validation matrix (data-driven) / VAL-01 Invalid or unusual booking body: {{name}}.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-004: empty first name is rejected with a 4xx status.]]>
+        <![CDATA[Error message: status 200: expected false to deeply equal true.]]>
+        <![CDATA[Stacktrace: AssertionError: status 200: expected false to deeply equal true
+   at Object.eval sandbox-script.js:1:1).]]>
+      </failure>
+    </testcase>
+    <testcase name="KNOWN-BUG API-BUG-004: whitespace-only first name is rejected with a 4xx status" time="0.286" classname="91ValidationMatrixDataDrivenVal01InvalidOrUnusualBookingBodyName">
+      <failure type="AssertionFailure" message="status 200: expected false to deeply equal true">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 7d575535-546b-4c09-8cd1-36252b4c432b.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 91 Validation matrix (data-driven) / VAL-01 Invalid or unusual booking body: {{name}}.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-004: whitespace-only first name is rejected with a 4xx status.]]>
+        <![CDATA[Error message: status 200: expected false to deeply equal true.]]>
+        <![CDATA[Stacktrace: AssertionError: status 200: expected false to deeply equal true
+   at Object.eval sandbox-script.js:1:1).]]>
+      </failure>
+    </testcase>
+    <testcase name="KNOWN-BUG API-BUG-002: null first name is rejected with a 4xx status" time="0.286" classname="91ValidationMatrixDataDrivenVal01InvalidOrUnusualBookingBodyName">
+      <failure type="AssertionFailure" message="status 500: expected false to deeply equal true">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 7d575535-546b-4c09-8cd1-36252b4c432b.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 91 Validation matrix (data-driven) / VAL-01 Invalid or unusual booking body: {{name}}.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-002: null first name is rejected with a 4xx status.]]>
+        <![CDATA[Error message: status 500: expected false to deeply equal true.]]>
+        <![CDATA[Stacktrace: AssertionError: status 500: expected false to deeply equal true
+   at Object.eval sandbox-script.js:1:1).]]>
+      </failure>
+    </testcase>
+    <testcase name="KNOWN-BUG API-BUG-002: numeric first name is rejected with a 4xx status" time="0.286" classname="91ValidationMatrixDataDrivenVal01InvalidOrUnusualBookingBodyName">
+      <failure type="AssertionFailure" message="status 500: expected false to deeply equal true">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 7d575535-546b-4c09-8cd1-36252b4c432b.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 91 Validation matrix (data-driven) / VAL-01 Invalid or unusual booking body: {{name}}.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-002: numeric first name is rejected with a 4xx status.]]>
+        <![CDATA[Error message: status 500: expected false to deeply equal true.]]>
+        <![CDATA[Stacktrace: AssertionError: status 500: expected false to deeply equal true
+   at Object.eval sandbox-script.js:1:1).]]>
+      </failure>
+    </testcase>
+    <testcase name="KNOWN-BUG API-BUG-004: depositpaid as the text &quot;yes&quot; is rejected with a 4xx status" time="0.286" classname="91ValidationMatrixDataDrivenVal01InvalidOrUnusualBookingBodyName">
+      <failure type="AssertionFailure" message="status 200: expected false to deeply equal true">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 7d575535-546b-4c09-8cd1-36252b4c432b.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 91 Validation matrix (data-driven) / VAL-01 Invalid or unusual booking body: {{name}}.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-004: depositpaid as the text "yes" is rejected with a 4xx status.]]>
+        <![CDATA[Error message: status 200: expected false to deeply equal true.]]>
+        <![CDATA[Stacktrace: AssertionError: status 200: expected false to deeply equal true
+   at Object.eval sandbox-script.js:1:1).]]>
+      </failure>
+    </testcase>
+    <testcase name="KNOWN-BUG API-BUG-002: depositpaid null is rejected with a 4xx status" time="0.286" classname="91ValidationMatrixDataDrivenVal01InvalidOrUnusualBookingBodyName">
+      <failure type="AssertionFailure" message="status 500: expected false to deeply equal true">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 7d575535-546b-4c09-8cd1-36252b4c432b.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 91 Validation matrix (data-driven) / VAL-01 Invalid or unusual booking body: {{name}}.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-002: depositpaid null is rejected with a 4xx status.]]>
+        <![CDATA[Error message: status 500: expected false to deeply equal true.]]>
+        <![CDATA[Stacktrace: AssertionError: status 500: expected false to deeply equal true
+   at Object.eval sandbox-script.js:1:1).]]>
+      </failure>
+    </testcase>
+    <testcase name="KNOWN-BUG API-BUG-012: check-in date with month 13 (2031-13-45) is rejected with a 4xx status" time="0.286" classname="91ValidationMatrixDataDrivenVal01InvalidOrUnusualBookingBodyName">
+      <failure type="AssertionFailure" message="status 200: expected false to deeply equal true">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 7d575535-546b-4c09-8cd1-36252b4c432b.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 91 Validation matrix (data-driven) / VAL-01 Invalid or unusual booking body: {{name}}.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-012: check-in date with month 13 (2031-13-45) is rejected with a 4xx status.]]>
+        <![CDATA[Error message: status 200: expected false to deeply equal true.]]>
+        <![CDATA[Stacktrace: AssertionError: status 200: expected false to deeply equal true
+   at Object.eval sandbox-script.js:1:1).]]>
+      </failure>
+    </testcase>
+    <testcase name="KNOWN-BUG API-BUG-002: missing bookingdates is rejected with a 4xx status" time="0.286" classname="91ValidationMatrixDataDrivenVal01InvalidOrUnusualBookingBodyName">
+      <failure type="AssertionFailure" message="status 500: expected false to deeply equal true">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 7d575535-546b-4c09-8cd1-36252b4c432b.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 91 Validation matrix (data-driven) / VAL-01 Invalid or unusual booking body: {{name}}.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-002: missing bookingdates is rejected with a 4xx status.]]>
+        <![CDATA[Error message: status 500: expected false to deeply equal true.]]>
+        <![CDATA[Stacktrace: AssertionError: status 500: expected false to deeply equal true
+   at Object.eval sandbox-script.js:1:1).]]>
+      </failure>
+    </testcase>
+    <testcase name="KNOWN-BUG API-BUG-002: empty bookingdates object is rejected with a 4xx status" time="0.286" classname="91ValidationMatrixDataDrivenVal01InvalidOrUnusualBookingBodyName">
+      <failure type="AssertionFailure" message="status 500: expected false to deeply equal true">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 7d575535-546b-4c09-8cd1-36252b4c432b.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 91 Validation matrix (data-driven) / VAL-01 Invalid or unusual booking body: {{name}}.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-002: empty bookingdates object is rejected with a 4xx status.]]>
+        <![CDATA[Error message: status 500: expected false to deeply equal true.]]>
+        <![CDATA[Stacktrace: AssertionError: status 500: expected false to deeply equal true
+   at Object.eval sandbox-script.js:1:1).]]>
+      </failure>
+    </testcase>
+    <testcase name="KNOWN-BUG API-BUG-002: null total price is rejected with a 4xx status" time="0.286" classname="91ValidationMatrixDataDrivenVal01InvalidOrUnusualBookingBodyName">
+      <failure type="AssertionFailure" message="status 500: expected false to deeply equal true">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 7d575535-546b-4c09-8cd1-36252b4c432b.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 91 Validation matrix (data-driven) / VAL-01 Invalid or unusual booking body: {{name}}.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-002: null total price is rejected with a 4xx status.]]>
+        <![CDATA[Error message: status 500: expected false to deeply equal true.]]>
+        <![CDATA[Stacktrace: AssertionError: status 500: expected false to deeply equal true
+   at Object.eval sandbox-script.js:1:1).]]>
+      </failure>
+    </testcase>
+    <testcase name="KNOWN-BUG API-BUG-012: decimal total price 99.99 is rejected or stored exactly as sent" time="0.286" classname="91ValidationMatrixDataDrivenVal01InvalidOrUnusualBookingBodyName">
+      <failure type="AssertionFailure" message="status 200: expected false to deeply equal true">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 7d575535-546b-4c09-8cd1-36252b4c432b.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 91 Validation matrix (data-driven) / VAL-01 Invalid or unusual booking body: {{name}}.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-012: decimal total price 99.99 is rejected or stored exactly as sent.]]>
+        <![CDATA[Error message: status 200: expected false to deeply equal true.]]>
+        <![CDATA[Stacktrace: AssertionError: status 200: expected false to deeply equal true
+   at Object.eval sandbox-script.js:1:1).]]>
+      </failure>
+    </testcase>
+    <testcase name="KNOWN-BUG API-BUG-012: ambiguous slash date 03/03/2031 is rejected or stored exactly as sent" time="0.286" classname="91ValidationMatrixDataDrivenVal01InvalidOrUnusualBookingBodyName">
+      <failure type="AssertionFailure" message="status 200: expected false to deeply equal true">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 7d575535-546b-4c09-8cd1-36252b4c432b.]]>
+        <![CDATA[Collection name: Restful-Booker API Tests.]]>
+        <![CDATA[Request name: 91 Validation matrix (data-driven) / VAL-01 Invalid or unusual booking body: {{name}}.]]>
+        <![CDATA[Test description: KNOWN-BUG API-BUG-012: ambiguous slash date 03/03/2031 is rejected or stored exactly as sent.]]>
+        <![CDATA[Error message: status 200: expected false to deeply equal true.]]>
+        <![CDATA[Stacktrace: AssertionError: status 200: expected false to deeply equal true
+   at Object.eval sandbox-script.js:1:1).]]>
+      </failure>
+    </testcase>
+    <testcase name="very large total price 1e15 is rejected or stored exactly as sent" time="0.286" classname="91ValidationMatrixDataDrivenVal01InvalidOrUnusualBookingBodyName"/>
+    <testcase name="unicode and emoji in first name is rejected or stored exactly as sent" time="0.286" classname="91ValidationMatrixDataDrivenVal01InvalidOrUnusualBookingBodyName"/>
+  </testsuite>
+</testsuites>

@@ -11,12 +11,18 @@ fs.mkdirSync(REPORTS, { recursive: true });
 const collection = path.join(ROOT, 'collections', 'restful-booker.postman_collection.json');
 const environment = JSON.parse(fs.readFileSync(path.join(ROOT, 'environments', 'qa.postman_environment.json'), 'utf8'));
 const folders = JSON.parse(fs.readFileSync(collection, 'utf8')).item.map((f) => f.name);
-const functional = folders.filter((n) => !n.startsWith('90'));
-const dataDriven = folders.filter((n) => n.startsWith('90'));
+const isDataDriven = (n) => /^9\d /.test(n);
+const functional = folders.filter((n) => !isDataDriven(n));
+// Each data-driven folder runs once per row of its data file.
+const dataSets = [
+  { prefix: '90', data: 'bookings.json', report: 'data-driven', title: 'Restful-Booker: data-driven create/read/delete' },
+  { prefix: '91', data: 'invalid-bookings.json', report: 'validation', title: 'Restful-Booker: validation matrix (invalid and unusual bodies)' },
+];
 
 const run = (opts) => new Promise((resolve, reject) => newman.run(opts, (err, summary) => (err ? reject(err) : resolve(summary))));
 
 (async () => {
+  await require('@apidevtools/swagger-parser').validate(path.join(ROOT, 'spec', 'openapi.yaml')); // fail fast on a broken spec
   const smoke = process.argv.includes('--smoke');
   const common = { collection, reporters: ['cli', 'htmlextra', 'junit'], insecure: false, timeoutRequest: 20000 };
 
@@ -25,17 +31,23 @@ const run = (opts) => new Promise((resolve, reject) => newman.run(opts, (err, su
     reporter: { htmlextra: { export: path.join(REPORTS, 'functional-report.html'), title: 'Restful-Booker: functional, security and contract tests', browserTitle: 'API test report', showOnlyFails: false }, junit: { export: path.join(REPORTS, 'functional-junit.xml') } },
   });
 
-  let s2 = null;
+  const extra = [];
+  let env = s1.environment.values.members;
   if (!smoke) {
-    s2 = await run({
-      ...common, environment: { values: s1.environment.values.members }, folder: dataDriven,
-      iterationData: path.join(ROOT, 'data', 'bookings.json'),
-      reporter: { htmlextra: { export: path.join(REPORTS, 'data-driven-report.html'), title: 'Restful-Booker: data-driven create/read/delete' }, junit: { export: path.join(REPORTS, 'data-driven-junit.xml') } },
-    });
+    for (const d of dataSets) {
+      const s = await run({
+        ...common, environment: { values: env }, folder: folders.filter((n) => n.startsWith(d.prefix + ' ')),
+        iterationData: path.join(ROOT, 'data', d.data),
+        reporter: { htmlextra: { export: path.join(REPORTS, `${d.report}-report.html`), title: d.title }, junit: { export: path.join(REPORTS, `${d.report}-junit.xml`) } },
+      });
+      extra.push(s);
+      env = s.environment.values.members;
+    }
   }
+  const s2 = extra.length ? extra[extra.length - 1] : null; // last run holds the final environment
 
   // ---- classify results
-  const summaries = [s1, s2].filter(Boolean);
+  const summaries = [s1, ...extra];
   const rows = summaries.flatMap((s) => s.run.executions.flatMap((e) => (e.assertions || []).map((a) => ({ request: e.item.name, name: a.assertion, failed: !!a.error }))));
   const isKnown = (n) => n.startsWith('KNOWN-BUG');
   const passed = rows.filter((r) => !r.failed && !isKnown(r.name)).length;
