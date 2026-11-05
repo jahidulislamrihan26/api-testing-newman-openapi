@@ -27,7 +27,7 @@ Automated API test suite for the public [Restful-Booker](https://restful-booker.
 | [docs/test-case-matrix.md](docs/test-case-matrix.md) | Every test case, assertion and linked defect (also as [CSV](docs/test-cases.csv)) |
 | [docs/defects/](docs/defects/README.md) | 9 defect reports with request, expected, actual and impact |
 | [docs/test-summary-report.md](docs/test-summary-report.md) | Results, findings, recommendations |
-| [reports/functional-report.html](reports/functional-report.html) | Interactive HTML report from the last run (download and open) |
+| [Live HTML report](https://jahidulislamrihan26.github.io/sqa-portfolio/api/functional-report.html) | Interactive report from the latest CI run (also saved as [reports/functional-report.html](reports/functional-report.html)) |
 
 ## Run it
 ```bash
