@@ -17,6 +17,8 @@ Automated, **specification-driven** test suite for the public [Restful-Booker](h
 | Stability | Three consecutive runs gave identical results on the shared public API |
 | Hygiene | Every booking the suite creates is deleted afterwards (23 of 23); secrets are redacted from reports |
 
+[![The functional report: a banner explains that the red failed checks are documented defects](docs/images/report-overview.png)](https://jahidulislamrihan26.github.io/api-testing-newman-openapi/functional-report.html)
+
 ## Highlights
 - **Spec-driven.** `spec/openapi.yaml` documents every operation and response. The collection builder reads its schemas from the spec, a linter validates the spec, and a [coverage report](docs/api-coverage.md) compares the documented responses with the status codes the tests assert. A generic "any 4xx" check only counts for 400, so 401, 403, 404, 406, 415 and 304 each need their own assertion.
 - **Validation matrix.** One request runs 14 invalid or unusual bodies from [data/invalid-bookings.json](data/invalid-bookings.json) (null, wrong type, bad dates, decimals, Unicode and more). The rule: reject with 4xx, or store exactly what was sent, never silently change it. It found data being corrupted, for example an invalid date stored as `0NaN-aN-aN` and `99.99` saved as `99`.
