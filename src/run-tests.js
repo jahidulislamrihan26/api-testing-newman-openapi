@@ -86,6 +86,20 @@ const run = (opts) => new Promise((resolve, reject) => newman.run(opts, (err, su
   };
   fs.writeFileSync(path.join(REPORTS, 'summary.json'), JSON.stringify({ ...result, unexpected, knownFailing: knownFailing.map((r) => `${r.request}: ${r.name}`), knownFixed: knownFixed.map((r) => `${r.request}: ${r.name}`) }, null, 2));
 
+  // ---- explain the failures at the top of each report. The report tool counts every failed assertion as a failure; here most
+  // are documented defects of the API under test (KNOWN-BUG), so each report says how many of each kind it contains.
+  const reportFiles = [['functional-report.html', s1], ...extra.map((s, i) => [`${dataSets[i].report}-report.html`, s])];
+  for (const [file, s] of reportFiles) {
+    const rs = s.run.executions.flatMap((e) => (e.assertions || []).map((a) => ({ name: a.assertion, failed: !!a.error })));
+    const failed = rs.filter((r) => r.failed), known = failed.filter((r) => isKnown(r.name)).length, other = failed.length - known;
+    const verdict = other === 0
+      ? `<b>No unexpected failures.</b> The ${known} failed checks are documented defects of the API under test (names start with <code>KNOWN-BUG</code>); each has a report in docs/defects.`
+      : `<b>${other} unexpected failure(s)</b> besides ${known} documented defects (<code>KNOWN-BUG</code>). The unexpected ones are regressions or problems to investigate.`;
+    const banner = `<div style="margin:12px auto;max-width:1100px;padding:12px 16px;border:1px solid #c9a227;border-left:6px solid #c9a227;border-radius:6px;background:#fff8e1;color:#222;font:15px/1.5 system-ui,sans-serif">Reading this report: ${verdict} Red tiles below count every failed check, including those documented defects.</div>`;
+    const p = path.join(REPORTS, file);
+    if (fs.existsSync(p)) fs.writeFileSync(p, fs.readFileSync(p, 'utf8').replace(/<body([^>]*)>/, `<body$1>${banner}`));
+  }
+
   // ---- redact secrets from the generated reports (they are committed and published)
   const secrets = [get('token'), get('adminPass'), get('basicAuth')].filter((s) => s && s.length >= 6);
   for (const f of fs.readdirSync(REPORTS)) {
